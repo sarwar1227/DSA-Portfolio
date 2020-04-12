@@ -1,4 +1,4 @@
-#include<iostream>
+#include<bits/stdc++.h>
 #include<conio.h>
 #include<cctype>
 using namespace std;
@@ -181,7 +181,7 @@ node *delafter(node *last,int data)
 int menu()
 {
     system("cls");
-    int ch;
+    string ch; stringstream ss; int temp;
     cout<<"1.Create a List";
     cout<<endl<<"2.Add at Beginning";
     cout<<endl<<"3.Add To Last";
@@ -193,7 +193,8 @@ int menu()
     cout<<endl<<"9.Exit";
     cout<<endl<<"Enter Your Choice : ";
     cin>>ch;
-    return ch;
+    ss<<ch; ss>>temp;
+    return temp;
 }
 int main()
 {
