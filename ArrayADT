@@ -1,0 +1,211 @@
+#include<iostream>
+#include<conio.h>
+#include<windows.h>
+#include<bits/stdc++.h>
+using namespace std;
+struct ArrayADT
+{
+    int capacity;
+    int last_index;
+    int *arr;
+};
+ArrayADT *create_array(int capacity);
+void set_item(ArrayADT *,int index,int value);
+int get_item(ArrayADT *adt,int index);
+void edit_item(ArrayADT *adt,int index,int value);
+void remove_item(ArrayADT *adt,int index);
+int search_item(ArrayADT *adt,int value);
+void sort_items(ArrayADT *adt);
+void view_array(ArrayADT *adt);
+
+void view_array(ArrayADT *adt)
+{
+    cout<<endl<<"Values in Array : ";
+    for(int i=0;i<=adt->last_index;i++)
+        cout<<adt->arr[i]<<" ";
+}
+ArrayADT *create_array(int capacity)
+{
+    ArrayADT *a=new ArrayADT;
+    a->capacity=capacity;
+    a->last_index=-1;
+    a->arr=new int[a->capacity];
+    return a;
+}
+int get_item(ArrayADT *adt,int index)
+{
+    if(index<0||index>adt->last_index||adt->last_index==-1){
+        cout<<endl<<"Invalid Index";
+        return -1;}
+    else
+        return adt->arr[index];
+}
+void edit_item(ArrayADT *adt,int index,int value)
+{
+  if(index<0||index>adt->last_index+1||adt->last_index==-1)
+        cout<<endl<<"Invalid Index";
+  else
+  {
+      adt->arr[index]=value;
+      cout<<endl<<"Value Modified !!";
+  }
+
+}
+void set_item(ArrayADT *adt,int index,int value)
+{
+   if(index>adt->capacity-1)
+    cout<<endl<<"Array Is Full....No More insertion allowed !!";
+   else if(index<0 || index>adt->last_index+1)
+    cout<<endl<<"Invalid Index...Insertion Not Allowed";
+   else if(index==adt->last_index+1)
+   {
+           adt->last_index++;
+           adt->arr[index]=value;
+           cout<<endl<<"Value Successfully Inserted !!";
+   }
+   else if(index>0&&index<adt->last_index)
+   {
+       adt->last_index++;
+       int i=adt->last_index;
+       while(i!=index){
+        adt->arr[i]=adt->arr[i-1];
+        i--;}
+       adt->arr[index]=value;
+       cout<<endl<<"Value Successfully Inserted !!";
+   }
+}
+void remove_item(ArrayADT *adt,int index)
+{
+   if(index<0||index>adt->last_index+1||adt->last_index==-1)
+        cout<<endl<<"Invalid Index";
+    else
+    {
+       cout<<endl<<"Removed Item : "<<adt->arr[index];
+       int i=adt->last_index;
+       while(i!=index)
+       {
+           adt->arr[i-1]=adt->arr[i];
+           i--;
+       }
+       adt->last_index--;
+    }
+}
+int search_item(ArrayADT *adt,int value)
+{
+    for(int i=0;i<=adt->last_index;i++)
+        if(adt->arr[i]==value)
+         return i;
+    cout<<endl<<"Value Not Found !!";
+    return -1;
+}
+void sort_items(ArrayADT *adt)
+{
+    for(int r=1;r<=adt->last_index;r++)
+        for(int i=0;i<=adt->last_index-r;i++)
+          if(adt->arr[i]>adt->arr[i+1])
+           adt->arr[i]=adt->arr[i]+adt->arr[i+1]-(adt->arr[i+1]=adt->arr[i]);
+}
+int menu()
+{
+    system("cls");
+    string ch; stringstream ss; int temp;
+    cout<<"1.Create Array";
+    cout<<endl<<"2.Add Item";
+    cout<<endl<<"3.Get Item";
+    cout<<endl<<"4.Edit Item";
+    cout<<endl<<"5.Remove Item";
+    cout<<endl<<"6.Search Item";
+    cout<<endl<<"7.Sort Items";
+    cout<<endl<<"8.View Array Values";
+    cout<<endl<<"9.Exit";
+    cout<<endl<<"Enter Your Choice : ";
+    cin>>ch; ss<<ch; ss>>temp;
+    return temp;
+}
+int main()
+{
+    int cap,index;
+    ArrayADT *ADT=NULL;
+    while(1)
+    {
+        switch(menu())
+        {
+        case 1:
+            cout<<endl<<"Enter Size of Array : ";
+            cin>>cap;
+            ADT=create_array(cap);
+            cout<<endl<<"Array of Capacity "<<cap<<" Created Successfully !!";
+            break;
+        case 2:
+            if(ADT==NULL)
+                cout<<endl<<"Array Not Created..Create an Array ADT First";
+            else{
+            cout<<endl<<"Enter Index : ";
+            cin>>index;
+            cout<<endl<<"Enter Value : ";
+            cin>>cap;
+            set_item(ADT,index,cap);}
+            break;
+        case 3:
+            if(ADT==NULL)
+                cout<<endl<<"Array Not Created..Create an Array ADT First";
+            else{
+            cout<<endl<<"Enter Index : ";
+            cin>>index;
+            cap=get_item(ADT,index);
+            if(cap!=-1)
+             cout<<endl<<"Value at index "<<index<<" is "<<cap;}
+            break;
+        case 4:if(ADT==NULL)
+                cout<<endl<<"Array Not Created..Create an Array ADT First";
+            else{
+            cout<<endl<<"Enter Index : ";
+            cin>>index;
+            cout<<endl<<"Enter New Value : ";
+            cin>>cap;
+            edit_item(ADT,index,cap);}
+            break;
+        case 5:
+            if(ADT==NULL)
+                cout<<endl<<"Array Not Created..Create an Array ADT First";
+            else{
+            cout<<endl<<"Enter Index : ";
+            cin>>index;
+            remove_item(ADT,index);}
+            break;
+        case 6:
+            if(ADT==NULL)
+                cout<<endl<<"Array Not Created..Create an Array ADT First";
+            else{
+            cout<<endl<<"Enter Item : ";
+            cin>>cap;
+            cout<<endl<<"Index of Entered Value Searching......";
+            index=search_item(ADT,cap);
+            Sleep(250);
+            if(index!=-1)
+             cout<<endl<<"Value Found at Index : "<<index;}
+            break;
+        case 7:
+            if(ADT==NULL)
+                cout<<endl<<"Array Not Created..Create an Array ADT First";
+            else{
+            cout<<endl<<"Sorting Elements........";
+            Sleep(250);
+            sort_items(ADT);
+            cout<<endl<<"Array Sorted !!";}
+            break;
+        case 8:
+            if(ADT==NULL)
+                cout<<endl<<"Array Not Created..Create an Array ADT First";
+            else{
+            view_array(ADT);}
+            break;
+        case 9:
+            exit(0);
+        default:
+            cout<<endl<<"Invalid Choice !!";
+        }
+        getch();
+    }
+    return 0;
+}
